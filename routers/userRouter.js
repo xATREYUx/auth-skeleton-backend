@@ -131,6 +131,7 @@ router.post("/login", async (req, res) => {
           expires: new Date(0),
         })
         .send();
+      console.log("---Logged Out---");
     } catch (err) {
       console.log("err", err);
     }
