@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 router.post("/", async (req, res) => {
+  console.log("New User Creation Initiated");
   try {
     const { email, password, passwordVerify } = req.body;
     console.log(email);
@@ -54,6 +55,8 @@ router.post("/", async (req, res) => {
     res
       .cookie("token", token, {
         httpOnly: true,
+        sameSite: "none",
+        secure: true,
       })
       .send();
   } catch (err) {
@@ -97,6 +100,14 @@ router.post("/login", async (req, res) => {
     res
       .cookie("token", token, {
         httpOnly: true,
+        sameSite:
+          process.env.NODE_ENV === "development"
+            ? "lax"
+            : process.env.NODE_ENV === "production" && "none",
+        secure:
+          process.env.NODE_ENV === "development"
+            ? false
+            : process.env.NODE_ENV === "production" && true,
       })
       .send();
   } catch (err) {
